@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Webwinkel</title>
+</head>
+<body style="overflow: scroll;" class="content">
+	<header>
+      <div class="overlay"></div>
+    </header>
+	<nav class="nav">
+           <ul>
+                <li><a href="index.html">Home</a></li>
+				<li><a href="produkten.html">Produkten</a></li>
+                <li><a href="overons.html">Over ons</a></li>
+                <li class="cart">
+				<a href="cart.html"><ion-icon name="basket"></ion-icon>Winkelwagen<span>0</span></a>
+                </li>
+            </ul>
+	</nav>
+	<div style="text-align: center;  border: 1px; padding: 0px;">
+	<div class="container">
+    <div class="image">
+			
+	<table id="detail"; style="padding: 5px; border: 1px solid;">
+    <tbody >
+		<tr><td colspan="3"><h1>Produkt detail</h1><br></td></tr>	
+    <tr>
+      <td><img src="images/smartwatch.jpg" height="285px" width="250" alt=""></td><br>
+	  <td>&nbsp;&nbsp;</td>
+      <td valign="top" style="width: 400px; text-align: justify;"><img src="images/star.png" width="30" height="30" alt=""/><img src="images/star.png" width="30" height="30" alt=""/><img src="images/star.png" width="30" height="30" alt=""/><img src="images/star.png" width="30" height="30" alt=""/><img src="images/star.png" width="30" height="30" alt=""/><br><br>
+        Elevate your daily routine with our Smartwatch, designed to seamlessly integrate into your lifestyle. Track your fitness goals, stay connected with notifications, and manage your health with ease—all from your wrist. Featuring a sleek design, long battery life, and advanced sensors, this smartwatch is your perfect partner for staying active, organized, and in touch. Whether you're hitting the gym, heading to a meeting, or going for a run, this smartwatch helps you stay on top of it all with effortless style and convenience.  
+	</td>
+	</tr>
+    <tr>
+      <td><h3>Smartwatch</h3></td>
+      <td></td><br>
+	  <td></td>
+    </tr>
+   
+    <tr>
+      <td><h3>&#8364 129,99</h3></td>
+      <td>&nbsp;</td>
+	  <td><br>
+
+            <!--THIS LINE IS NOT DISPLAYED (style="display: none;") but necesary for the button below to actually use "cart2")-->
+            <a style="display: none; text-align: center; color: white; position: relative; margin-left: 0%; margin-bottom: 0%" class="add-cart cart1"  href="produkten.html">In winkelwagen</a><input size="0" type="hidden" value="15" /> 
+          
+            <a style="text-align: center; color: white; position: relative; margin-left: 0%; margin-bottom: 0%" class="add-cart cart2"  href="produkten.html">In winkelwagen</a><input size="0" type="hidden" value="15" /></td>
+    </tr>
+
+        
+    <tr>
+    <td></td>
+	<td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+    
+<footer style="margin: auto; width: 50%; padding: 30px; text-align: center; top:20px;">Copyright © 2024 IUW Enterprises</footer>
+</div>
+		</div>
+
+<script src="main.js"></script>
+<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+</body>
+</html>

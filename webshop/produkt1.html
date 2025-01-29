@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Webwinkel</title>
+</head>
+<body style="overflow: scroll;" class="content">
+	<header>
+      <div class="overlay"></div>
+    </header>
+	<nav class="nav">
+           <ul>
+                <li><a href="index.html">Home</a></li>
+				<li><a href="produkten.html">Produkten</a></li>
+                <li><a href="overons.html">Over ons</a></li>
+                <li class="cart">
+				<a href="cart.html"><ion-icon name="basket"></ion-icon>Winkelwagen<span>0</span></a>
+                </li>
+            </ul>
+	</nav>
+	<div style="text-align: center;  border: 1px; padding: 0px;">
+	<div class="container">
+    <div class="image">
+			
+	<table id="detail" border="0" style="padding: 5px; border: 1px solid;">
+    <tbody >
+		<tr><td colspan="3"><h1>Product detail</h1><br></td></tr>	
+    <tr>
+      <td><img src="images/wireless_earbuds.jpg" height="285px" width="285px" alt=""></td><br>
+	  <td>&nbsp;&nbsp;</td>
+      <td valign="top" style="width: 400px; text-align: justify;">
+        <img src="images/star.png" width="12px" height="12" alt="" style="display: inline-block; margin-right: 5px;">
+        <img src="images/star.png" width="12" height="12" alt="" style="display: inline-block; margin-right: 5px;">
+        <img src="images/star.png" width="12" height="12" alt="" style="display: inline-block; margin-right: 5px;">
+        <img src="images/star.png" width="12" height="12" alt="" style="display: inline-block; margin-right: 5px;">
+        <img src="images/star.png" width="12" height="12" alt="" style="display: inline-block;">
+    </td>
+    </tr>
+	</td>
+	</tr>
+    <tr>
+      <td><h3>Wireless Earbuds</h3></td>
+      <td></td><br>
+	  <td>          Discover the ultimate in wireless freedom with our Bluetooth Earbuds, designed to provide crystal-clear sound and all-day comfort. Whether you're working out, commuting, or relaxing at home, these earbuds deliver an exceptional audio experience 
+    </td>
+    </tr>
+        
+        
+    <tr>
+      <td><h3>&#8364 59,99</h3></td>
+      <td>&nbsp;</td>
+	  <td><a style="text-align: center; color: white; position: relative; margin-left: 0%; margin-bottom: 0%" class="add-cart cart1"  href="produkten.html">In winkelwagen</a><input size="0" type="hidden" value="15" /></td>
+    </tr>
+        
+        
+    <tr>
+    <td></td>
+	<td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<form id="review-form">
+  <div id="stars-container">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+  </div>
+  <textarea id="review-text" placeholder="Write your review here..."></textarea>
+  <button type="submit">Submit Review</button>
+</form>
+
+<div id="review-list"></div>
+
+<script src="review.js"></script>
+
+
+
+</div>
+    
+<footer style="margin: auto; width: 50%; padding: 30px; text-align: center; top:20px;">Copyright © 2024 IUW Enterprises</footer>
+</div>
+		</div>
+
+<script src="main.js"></script>
+<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+</body>
+</html>
