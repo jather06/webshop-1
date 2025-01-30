@@ -1,56 +1,5 @@
 let carts = document.querySelectorAll('.add-cart');
 
-let products = [ 
-    {
-        name: "Docent zonder haar",
-        tag: "docentzonderhaar",
-        price: 15,
-        inCart: 0
-    },
-    {
-        name: "Docent met baard",
-        tag: "docentmetbaard",
-        price: 15,
-        inCart: 0
-    },
-    {
-        name: "Docent met haar",
-        tag: "docentmethaar",
-        price: 15,
-        inCart: 0
-    },
-    {
-        name: "Studiepunten",
-        tag: "studiepunten",
-        price: 100,
-        inCart: 0
-    },
-	    {
-        name: "Minnaert gebouw",
-        tag: "minnaertgebouw",
-        price: 40000,
-        inCart: 0
-    },
-	    {
-        name: "Academie gebouw",
-        tag: "academiegebouw",
-        price: 60000,
-        inCart: 0
-    },
-	{
-        name: "Bachelor diploma",
-        tag: "bachelordiploma",
-        price: 10000,
-        inCart: 0
-    },
-	{
-        name: "Docent met lang haar",
-        tag: "docentmetlanghaar",
-        price: 400,
-        inCart: 0
-    }
-];
-
 for(let i=0; i< carts.length; i++) {
     carts[i].addEventListener('click', () => {
         cartNumbers(products[i]);
@@ -239,7 +188,7 @@ displayCart();
 
 
 
-// AAAA
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -295,14 +244,14 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartUI();
 });
 
-// Functie om producten toe te voegen vanuit de productpagina
+
 document.querySelectorAll(".add-cart").forEach(button => {
     button.addEventListener("click", function (event) {
         event.preventDefault();
-        let productCard = this.closest(".flip-card"); // Get the main product card
-        // Correctly fetch the product name from .flip-card-front
+        let productCard = this.closest(".flip-card"); 
+        
         let productName = productCard.querySelector(".flip-card-front h3").innerText;
-        let productPriceText = productCard.querySelector(".price-tag").innerText; // Fetch price correctly
+        let productPriceText = productCard.querySelector(".price-tag").innerText; 
         let productPrice = parseFloat(productPriceText.replace("€", "").replace(",", ".").trim());
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         let existingProduct = cart.find(item => item.name === productName);
