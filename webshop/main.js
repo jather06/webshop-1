@@ -1,5 +1,82 @@
 let carts = document.querySelectorAll('.add-cart');
 
+let products = [
+    {
+        name: "Wireless Earbuds",
+        tag: "WirelessEarbuds",
+        price: 59.99,
+        inCart: 0
+    },
+    {
+        name: "Smartwatch",
+        tag: "Smartwatch",
+        price: 129.99,
+        inCart: 0
+    },
+    {
+        name: "Portable Speaker",
+        tag: "PortableSpeaker",
+        price: 49.99,
+        inCart: 0
+    },
+    {
+        name: "Air Fryer",
+        tag: "AirFryer",
+        price: 89.99,
+        inCart: 0
+    },
+    {
+        name: "Electric Kettle",
+        tag: "ElectricKettle",
+        price: 29.99,
+        inCart: 0
+    },
+    {
+        name: "Weighted Blanket",
+        tag: "WeightedBlanket",
+        price: 69.99,
+        inCart: 0
+    },
+    {
+        name: "Athleisure Wear",
+        tag: "AthleisureWear",
+        price: 39.99,
+        inCart: 0
+    },
+    {
+        name: "Classic Leather Wallet",
+        tag: "ClassicLeatherWallet",
+        price: 24.99,
+        inCart: 0
+    },
+    {
+        name: "Skincare Set",
+        tag: "SkincareSet",
+        price: 34.99,
+        inCart: 0
+    },
+    {
+        name: "Aromatherapy Diffuser",
+        tag: "AromatherapyDiffuser",
+        price: 44.99,
+        inCart: 0
+    },
+    {
+        name: "Building Block Set",
+        tag: "BuildingBlockSet",
+        price: 29.99,
+        inCart: 0
+    },
+    {
+        name: "Electric Scooter",
+        tag: "ElectricScooter",
+        price: 349.99,
+        inCart: 0
+    }
+];
+
+// i + 2, want er is iets mis gegaan bij het invoegen van producten en ik kan het niet fixen :D
+// nu worden de juiste producten ingeladen.
 for(let i=0; i< carts.length; i++) {
     carts[i].addEventListener('click', () => {
         cartNumbers(products[i]);
@@ -9,22 +86,31 @@ for(let i=0; i< carts.length; i++) {
 
 function onLoadCartNumbers() {
     let productNumbers = localStorage.getItem('cartNumbers');
-    if( productNumbers ) {
-        document.querySelector('.cart span').textContent = productNumbers;
+    let totalCost = localStorage.getItem('totalCost');
+
+    if (!productNumbers || isNaN(productNumbers)) {
+        localStorage.setItem('cartNumbers', 0);
+        productNumbers = 0;
     }
+
+    if (!totalCost || isNaN(totalCost)) {
+        localStorage.setItem('totalCost', 0);
+        totalCost = 0;
+    }
+
+    document.querySelector('.cart span').textContent = productNumbers;
 }
+
 
 function cartNumbers(product, action) {
     let productNumbers = localStorage.getItem('cartNumbers');
     productNumbers = parseInt(productNumbers);
-
     let cartItems = localStorage.getItem('productsInCart');
     cartItems = JSON.parse(cartItems);
 
-    if( action ) {
+    if( action === "decrease" ) {
         localStorage.setItem("cartNumbers", productNumbers - 1);
         document.querySelector('.cart span').textContent = productNumbers - 1;
-        console.log("action running");
     } else if( productNumbers ) {
         localStorage.setItem("cartNumbers", productNumbers + 1);
         document.querySelector('.cart span').textContent = productNumbers + 1;
@@ -32,241 +118,99 @@ function cartNumbers(product, action) {
         localStorage.setItem("cartNumbers", 1);
         document.querySelector('.cart span').textContent = 1;
     }
-    setItems(product);
+    setItems(product, action);
 }
 
-function setItems(product) {
+function setItems(product, action) {
     let cartItems = localStorage.getItem('productsInCart');
     cartItems = JSON.parse(cartItems);
 
-    if(cartItems != null) {
+    if (cartItems) {
         let currentProduct = product.tag;
-    
-        if( cartItems[currentProduct] == undefined ) {
-            cartItems = {
-                ...cartItems,
-                [currentProduct]: product
-            }
-        } 
-        cartItems[currentProduct].inCart += 1;
+        if (!cartItems[currentProduct]) {
+            cartItems[currentProduct] = product;
+        }
 
+        if (action === "decrease") {
+            cartItems[currentProduct].inCart = Math.max(cartItems[currentProduct].inCart - 1, 0);
+        } else {
+            cartItems[currentProduct].inCart += 1;
+        }
+
+        if (cartItems[currentProduct].inCart === 0) {
+            delete cartItems[currentProduct];
+        }
     } else {
         product.inCart = 1;
-        cartItems = { 
-            [product.tag]: product
-        };
+        cartItems = { [product.tag]: product };
     }
 
     localStorage.setItem('productsInCart', JSON.stringify(cartItems));
+    displayCart();
 }
 
-function totalCost( product, action ) {
+
+function totalCost(product, action) {
     let cart = localStorage.getItem("totalCost");
+    cart = cart ? parseFloat(cart) : 0; 
 
-    if( action) {
-        cart = parseInt(cart);
-
-        localStorage.setItem("totalCost", cart - product.price);
-    } else if(cart != null) {
-        
-        cart = parseInt(cart);
-        localStorage.setItem("totalCost", cart + product.price);
-    
+    if (action === "decrease") {
+        cart = Math.max(cart - product.price, 0); 
     } else {
-        localStorage.setItem("totalCost", product.price);
+        cart += product.price;
     }
+
+    localStorage.setItem("totalCost", cart.toFixed(2)); 
+    displayCart();
 }
+
+
 
 function displayCart() {
-    let cartItems = localStorage.getItem('productsInCart');
-    cartItems = JSON.parse(cartItems);
-
-    let cart = localStorage.getItem("totalCost");
-    cart = parseInt(cart);
-
+    let cartItems = JSON.parse(localStorage.getItem('productsInCart'));
+    let cart = parseInt(localStorage.getItem("totalCost"));
     let productContainer = document.querySelector('.products');
-    
-    if( cartItems && productContainer ) {
-        productContainer.innerHTML = '';
-        Object.values(cartItems).map( (item, index) => {
-            productContainer.innerHTML += 
-            `<div class="product"><ion-icon name="close-circle"></ion-icon>
-			
-				<img src="./images/${item.tag}.jpg" /><br><br>
-                <span class="sm-hide">${item.name}</span>
-            </div>
-            <div class="price sm-hide">&#8364 ${item.price},00</div>
-            <div class="quantity">
-                <ion-icon class="decrease " name="arrow-dropleft-circle"></ion-icon>
-                    <span>${item.inCart}</span>
-                <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>   
-            </div>
-            <div class="total">&#8364 ${item.inCart * item.price},00</div>`;
-        });
 
+    if (cartItems && productContainer) {
+        productContainer.innerHTML = '';
+        Object.values(cartItems).forEach(item => {
+            productContainer.innerHTML += `
+                <div class="product">
+                    <span>${item.name}</span>
+                </div>
+                <div class="price">€${item.price}</div>
+                <div class="quantity">
+                    <button class="decrease" data-tag="${item.tag}">-</button>
+                    <span>${item.inCart}</span>
+                    <button class="increase" data-tag="${item.tag}">+</button>
+                </div>
+                <div class="total">€${item.inCart * item.price}</div>
+            `;
+        });
         productContainer.innerHTML += `
             <div class="basketTotalContainer">
-                <h4 class="basketTotalTitle">Totaal</h4>
-                <h4 class="basketTotal">&#8364 ${cart},00</h4>
-            </div>`
+                <h4>Totaal</h4>
+                <h4>€${cart},00</h4>
+            </div>
+        `;
 
-        deleteButtons();
-        manageQuantity();
-    }
-}
-
-
-function manageQuantity() {
-    let decreaseButtons = document.querySelectorAll('.decrease');
-    let increaseButtons = document.querySelectorAll('.increase');
-    let currentQuantity = 0;
-    let currentProduct = '';
-    let cartItems = localStorage.getItem('productsInCart');
-    cartItems = JSON.parse(cartItems);
-
-    for(let i=0; i < increaseButtons.length; i++) {
-        decreaseButtons[i].addEventListener('click', () => {
-            console.log(cartItems);
-            currentQuantity = decreaseButtons[i].parentElement.querySelector('span').textContent;
-            console.log(currentQuantity);
-            currentProduct = decreaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
-            console.log(currentProduct);
-
-            if( cartItems[currentProduct].inCart > 1 ) {
-                cartItems[currentProduct].inCart -= 1;
-                cartNumbers(cartItems[currentProduct], "decrease");
-                totalCost(cartItems[currentProduct], "decrease");
-                localStorage.setItem('productsInCart', JSON.stringify(cartItems));
-                displayCart();
-            }
+        document.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', () => {
+                let tag = button.dataset.tag;
+                cartNumbers(products.find(p => p.tag === tag));
+                totalCost(products.find(p => p.tag === tag));
+            });
         });
 
-        increaseButtons[i].addEventListener('click', () => {
-            console.log(cartItems);
-            currentQuantity = increaseButtons[i].parentElement.querySelector('span').textContent;
-            console.log(currentQuantity);
-            currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
-            console.log(currentProduct);
-
-            cartItems[currentProduct].inCart += 1;
-            cartNumbers(cartItems[currentProduct]);
-            totalCost(cartItems[currentProduct]);
-            localStorage.setItem('productsInCart', JSON.stringify(cartItems));
-            displayCart();
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', () => {
+                let tag = button.dataset.tag;
+                cartNumbers(products.find(p => p.tag === tag), "decrease");
+                totalCost(products.find(p => p.tag === tag), "decrease");
+            });
         });
     }
 }
-
-function deleteButtons() {
-    let deleteButtons = document.querySelectorAll('.product ion-icon');
-    let productNumbers = localStorage.getItem('cartNumbers');
-    let cartCost = localStorage.getItem("totalCost");
-    let cartItems = localStorage.getItem('productsInCart');
-    cartItems = JSON.parse(cartItems);
-    let productName;
-    console.log(cartItems);
-
-    for(let i=0; i < deleteButtons.length; i++) {
-        deleteButtons[i].addEventListener('click', () => {
-            productName = deleteButtons[i].parentElement.textContent.toLocaleLowerCase().replace(/ /g,'').trim();
-           
-            localStorage.setItem('cartNumbers', productNumbers - cartItems[productName].inCart);
-            localStorage.setItem('totalCost', cartCost - ( cartItems[productName].price * cartItems[productName].inCart));
-
-            delete cartItems[productName];
-            localStorage.setItem('productsInCart', JSON.stringify(cartItems));
-
-            displayCart();
-            onLoadCartNumbers();
-        })
-    }
-}
-
 
 onLoadCartNumbers();
 displayCart();
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const cartContainer = document.querySelector(".products");
-    const cartTotal = document.createElement("h3");
-
-    function updateCartUI() {
-        cartContainer.innerHTML = "";
-        let totalPrice = 0;
-
-        if (cart.length === 0) {
-            cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-        } else {
-            cart.forEach((item, index) => {
-                let itemTotal = item.price * item.quantity;
-                totalPrice += itemTotal;
-
-                let productDiv = document.createElement("div");
-                productDiv.classList.add("cart-item");
-                productDiv.innerHTML = `
-                    <h5>${item.name}</h5>
-                    <p>€${item.price.toFixed(2)}</p>
-                    <input type="number" min="1" value="${item.quantity}" data-index="${index}" class="quantity-input">
-                    <p>€${itemTotal.toFixed(2)}</p>
-                    <button class="remove-item" data-index="${index}">Remove</button>
-                `;
-                cartContainer.appendChild(productDiv);
-            });
-        }
-
-        cartTotal.innerHTML = `Total: €${totalPrice.toFixed(2)}`;
-        cartContainer.appendChild(cartTotal);
-    }
-
-    cartContainer.addEventListener("change", function (event) {
-        if (event.target.classList.contains("quantity-input")) {
-            let index = event.target.getAttribute("data-index");
-            cart[index].quantity = parseInt(event.target.value);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartUI();
-        }
-    });
-
-    cartContainer.addEventListener("click", function (event) {
-        if (event.target.classList.contains("remove-item")) {
-            let index = event.target.getAttribute("data-index");
-            cart.splice(index, 1);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartUI();
-        }
-    });
-
-    updateCartUI();
-});
-
-
-document.querySelectorAll(".add-cart").forEach(button => {
-    button.addEventListener("click", function (event) {
-        event.preventDefault();
-        let productCard = this.closest(".flip-card"); 
-        
-        let productName = productCard.querySelector(".flip-card-front h3").innerText;
-        let productPriceText = productCard.querySelector(".price-tag").innerText; 
-        let productPrice = parseFloat(productPriceText.replace("€", "").replace(",", ".").trim());
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let existingProduct = cart.find(item => item.name === productName);
-
-        if (existingProduct) {
-            existingProduct.quantity += 1;
-        } else {
-            cart.push({ name: productName, price: productPrice, quantity: 1 });
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`${productName} added to cart!`);
-    });
-});
-
-
-
-
